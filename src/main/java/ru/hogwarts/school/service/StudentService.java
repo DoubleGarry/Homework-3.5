@@ -5,11 +5,14 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoIn;
 import ru.hogwarts.school.dto.StudentDtoOut;
+import ru.hogwarts.school.exception.AvatarNotFoundException;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.mapper.FacultyMapper;
 import ru.hogwarts.school.mapper.StudentMapper;
+import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
@@ -20,17 +23,20 @@ import java.util.Optional;
 public class StudentService {
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
+    private final AvatarRepository avatarRepository;
     private final StudentMapper studentMapper;
     private final FacultyMapper facultyMapper;
 
     public StudentService(StudentRepository studentRepository,
                           StudentMapper studentMapper,
                           FacultyRepository facultyRepository,
-                          FacultyMapper facultyMapper) {
+                          FacultyMapper facultyMapper,
+                          AvatarRepository avatarRepository) {
         this.studentMapper = studentMapper;
         this.facultyMapper = facultyMapper;
         this.studentRepository = studentRepository;
         this.facultyRepository = facultyRepository;
+        this.avatarRepository = avatarRepository;
     }
 
     public StudentDtoOut create(StudentDtoIn studentDtoIn) {
@@ -90,5 +96,10 @@ public class StudentService {
                 .map(Student::getFaculty)
                 .map(facultyMapper::toDto)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
+    }
+
+    public Avatar findAvatarByStudentId(long studentId) {
+        return avatarRepository.findByStudent_id(studentId)
+                .orElseThrow(() -> new AvatarNotFoundException(studentId));
     }
 }
