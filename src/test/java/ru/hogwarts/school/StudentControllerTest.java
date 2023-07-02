@@ -1,5 +1,7 @@
 package ru.hogwarts.school;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockHttpServletResponse;
 import ru.hogwarts.school.controller.StudentController;
 import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoIn;
@@ -231,61 +233,65 @@ class StudentControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-//    @Test
-//    @DisplayName("uploadAvatar")
-//    void shouldReturn200WhenAvatarSuccessfulUpload() throws Exception {
-//        MockMultipartFile file = new MockMultipartFile(
-//                "avatarImage",
-//                "1.jpg",
-//                MediaType.IMAGE_JPEG_VALUE,
-//                "some image".getBytes()
-//        );
-//        mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .multipart("/student/" + STUDENT_ID + "/avatar")
-//                                .file(file)
-//                )
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    @DisplayName("downloadAvatar [1]")
-//    void shouldReturnAvatarFromDataBaseByStudentId() throws Exception {
-//        Avatar avatar = new Avatar();
-//        avatar.setId(1L);
-//        avatar.setFilePath("/avatarDir/1.jpg");
-//        avatar.setFileSize(12580);
-//        avatar.setMediaType(MediaType.IMAGE_JPEG_VALUE);
-//        avatar.setData("some image".getBytes());
-//        avatar.setStudent(new Student());
-//
-//        when(studentService.findAvatarByStudentId(anyLong())).thenReturn(avatar);
-//        mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .get("/student/" + STUDENT_ID + "/avatar/preview")
-//                                .accept(MediaType.IMAGE_JPEG_VALUE)
-//                )
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    @DisplayName("downloadAvatar [2]")
-//    void shouldReturnAvatarFromServerDirectoryByStudentId() throws Exception {
-//        Avatar avatar = new Avatar();
-//        avatar.setId(1L);
-//        avatar.setFilePath("avatarsDir/1.jpg");
-//        avatar.setFileSize(12580);
-//        avatar.setMediaType(MediaType.IMAGE_JPEG_VALUE);
-//        avatar.setData("some image".getBytes());
-//        avatar.setStudent(new Student());
-//
-//        when(studentService.findAvatarByStudentId(anyLong())).thenReturn(avatar);
-//
-//        mockMvc.perform(
-//                        MockMvcRequestBuilders
-//                                .get("/student/" + STUDENT_ID + "/avatar")
-//                                .accept(MediaType.IMAGE_JPEG_VALUE)
-//                )
-//                .andExpect(status().isOk());
-//    }
+    // Не уверен, что тут все правильно сделал
+    @Test
+    @DisplayName("uploadAvatar")
+    void shouldReturn200WhenAvatarSuccessfulUpload() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                "avatarImage",
+                "1.jpg",
+                MediaType.IMAGE_JPEG_VALUE,
+                "some image".getBytes()
+        );
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .multipart("/student/" + STUDENT_ID + "/avatar")
+                                .file(file)
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("downloadAvatar [1]")
+    void shouldReturnAvatarFromDataBaseByStudentId() throws Exception {
+        Avatar avatar = new Avatar();
+        avatar.setId(1L);
+        avatar.setFilePath("/avatarDir/1.jpg");
+        avatar.setFileSize(12580);
+        avatar.setMediaType(MediaType.IMAGE_JPEG_VALUE);
+        avatar.setData("some image".getBytes());
+        avatar.setStudent(new Student());
+
+        when(studentService.findAvatarByStudentId(anyLong())).thenReturn(avatar);
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/student/" + STUDENT_ID + "/avatar/preview")
+                                .accept(MediaType.IMAGE_JPEG_VALUE)
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("downloadAvatar [2]")
+    void shouldReturnAvatarFromServerDirectoryByStudentId() throws Exception {
+        Avatar avatar = new Avatar();
+        avatar.setId(1L);
+        avatar.setFilePath("avatarsDir/1.jpg");
+        avatar.setFileSize(12580);
+        avatar.setMediaType(MediaType.IMAGE_JPEG_VALUE);
+        avatar.setData("some image".getBytes());
+        avatar.setStudent(new Student());
+
+        when(studentService.findAvatarByStudentId(anyLong())).thenReturn(avatar);
+        MockHttpServletResponse response = new MockHttpServletResponse();
+       response.setStatus(HttpStatus.OK.value());
+        response.setContentType(avatar.getMediaType());
+        response.setContentLengthLong(avatar.getFileSize());
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/student/" + STUDENT_ID + "/avatar")
+                                .accept(MediaType.IMAGE_JPEG_VALUE)
+                )
+                .andExpect(status().isOk());
+    }
 }
