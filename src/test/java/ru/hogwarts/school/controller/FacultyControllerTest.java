@@ -24,10 +24,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * FacultyService замокал, т.к. тесты написал для него отдельно
- * и нет смысла проверять его методы еще раз
- */
 @WebMvcTest(controllers = FacultyController.class)
 @Tag("facultyController")
 class FacultyControllerTest {

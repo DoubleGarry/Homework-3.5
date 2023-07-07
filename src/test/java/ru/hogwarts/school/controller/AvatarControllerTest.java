@@ -60,8 +60,7 @@ class AvatarControllerTest {
         mockMvc.perform(
                         MockMvcRequestBuilders
                                 .get("/avatar/" + STUDENT_ID)
-                                .accept(MediaType.IMAGE_JPEG_VALUE)
-                )
+                                .accept(MediaType.IMAGE_JPEG_VALUE))
                 .andExpect(status().isOk());
     }
 }

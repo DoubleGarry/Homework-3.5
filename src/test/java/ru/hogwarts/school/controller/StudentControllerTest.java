@@ -228,7 +228,6 @@ class StudentControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    // Не уверен, что тут все правильно сделал
     @Test
     @DisplayName("uploadAvatar")
     void shouldReturn200WhenAvatarSuccessfulUpload() throws Exception {
