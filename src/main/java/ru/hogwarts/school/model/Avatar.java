@@ -6,22 +6,25 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "faculty")
-@ToString(exclude = "faculty")
+@EqualsAndHashCode(exclude = "student")
+@ToString(exclude = "student")
 @Builder
 @Entity
-public class Student {
+public class Avatar {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
-    private String name;
+    private String filePath;
 
     @Column(nullable = false)
-    private int age;
+    private long fileSize;
 
-    @ManyToOne
-    @JoinColumn(name = "faculty_id")
-    private Faculty faculty;
+    private String mediaType;
+
+    private byte[] data;
+
+    @OneToOne
+    private Student student;
 }
