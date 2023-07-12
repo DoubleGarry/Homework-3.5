@@ -15,14 +15,12 @@ CREATE TABLE person
     car_id         BIGINT REFERENCES car (id)
 );
 
-
 SELECT s.name AS student_name,
        s.age  AS student_age,
        f.name AS faculty_name
 FROM student s
          JOIN faculty f
               ON f.id = s.faculty_id;
-
 
 SELECT s.name AS name,
        s.age  AS age,
