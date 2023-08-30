@@ -11,39 +11,39 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/faculty")
 public class FacultyController {
-    private final FacultyService service;
+    private final FacultyService facultyService;
 
-    public FacultyController(FacultyService service) {
-        this.service = service;
+    public FacultyController(FacultyService facultyService) {
+        this.facultyService = facultyService;
     }
 
     @PostMapping
     public FacultyDtoOut create(@RequestBody FacultyDtoIn facultyDtoIn) {
-        return service.create(facultyDtoIn);
+        return facultyService.create(facultyDtoIn);
     }
 
     @GetMapping("{id}")
     public FacultyDtoOut get(@PathVariable long id) {
-        return service.get(id);
+        return facultyService.get(id);
     }
 
     @PutMapping("/{id}")
     public FacultyDtoOut update(@PathVariable long id, @RequestBody FacultyDtoIn facultyDtoIn) {
-        return service.update(id, facultyDtoIn);
+        return facultyService.update(id, facultyDtoIn);
     }
 
     @DeleteMapping("{id}")
     public FacultyDtoOut delete(@PathVariable long id) {
-        return service.delete(id);
+        return facultyService.delete(id);
     }
 
     @GetMapping("/filter")
     public Collection<FacultyDtoOut> filter(@RequestParam String colorOrName) {
-        return service.findByColorOrName(colorOrName);
+        return facultyService.findByColorOrName(colorOrName);
     }
 
     @GetMapping("/{facultyName}/students")
     public Collection<StudentDtoOut> findAllStudentsOnFaculty(@PathVariable String facultyName) {
-        return service.findStudentsByFaculty(facultyName);
+        return facultyService.findStudentsByFaculty(facultyName);
     }
 }
